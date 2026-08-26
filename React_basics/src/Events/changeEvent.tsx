@@ -1,4 +1,5 @@
 function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+  console.clear();
   console.log(event.currentTarget.value);
 }
 
@@ -7,6 +8,7 @@ function handleSelect(event: React.ChangeEvent<HTMLSelectElement>) {
 }
 
 function handleMessage(event: React.ChangeEvent<HTMLTextAreaElement>) {
+  console.clear();
   console.log(event.currentTarget.value);
 }
 
@@ -16,6 +18,7 @@ export function ChangeEvent() {
       <h1>ChangeEvent</h1>
 
       <input type="text" onChange={handleNameChange} />
+
       <br />
       <br />
       <select onChange={handleSelect}>

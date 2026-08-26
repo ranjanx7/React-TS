@@ -16,6 +16,7 @@ import { Mouse } from "./Events/mouseEvent.tsx";
 import { ChangeEvent } from "./Events/changeEvent.tsx";
 import { Form } from "./Events/formEvent.tsx";
 import { KeyboardEventExample } from "./Events/keyEvents.tsx";
+import { SimpleForm } from "./Events/simpleForm.tsx";
 
 function App() {
   return (
@@ -66,6 +67,11 @@ function App() {
       <br />
       <br />
       <KeyboardEventExample />
+      <br />
+      <br />
+      <br />
+      <h1 style={{ backgroundColor: "yellow" }}>Simplle Form</h1>
+      <SimpleForm />
     </>
   );
 }
