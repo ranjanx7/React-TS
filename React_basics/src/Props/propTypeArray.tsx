@@ -10,3 +10,7 @@ export function StudentListArray({ students }: StudentListProps) {
     </ul>
   );
 }
+
+//
+//map() is a standard JavaScript array method that transforms each item in an array into something else.
+//The key prop is a special attribute that gives each list element a unique identity in React.

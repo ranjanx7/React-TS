@@ -1,7 +1,5 @@
 interface UserCardProps {
   name: string;
-}
-interface UserCardProps {
   age: number;
 }
 
