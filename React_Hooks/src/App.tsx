@@ -1,15 +1,14 @@
+import { ComponentOne } from "./props-drilling/ComponentOne";
 import { ComponentA } from "./use-context/ComponentA";
-import { ComponentB } from "./use-context/ComponentB";
-import { ComponentC } from "./use-context/ComponentC";
-import { ComponentD } from "./use-context/ComponentD";
 
 function App() {
   return (
     <>
+      <ComponentOne />
+      <p>----------------------------------------------------------------</p>
+      <p>----------------------------------------------------------------</p>
+
       <ComponentA />
-      <ComponentB />
-      <ComponentC />
-      <ComponentD />
     </>
   );
 }

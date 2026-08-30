@@ -1,3 +1,11 @@
+import { useContext } from "react";
+import { UserContext } from "./ComponentA";
 export function ComponentD() {
-  return <div className="box">Component D</div>;
+  const user = useContext(UserContext);
+  return (
+    <div className="box">
+      <h1>Component D</h1>
+      <h2>Hello {user}</h2>
+    </div>
+  );
 }
