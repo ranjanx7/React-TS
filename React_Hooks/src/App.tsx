@@ -1,14 +1,36 @@
-import { MyComponentReducer } from "./use-reducer/MyComponent1";
+import { MyComponentOne } from "./use-custom/MyComponentOne";
+import { MyComponentTwo } from "./use-custom/MyComponentTwo";
 
 function App() {
   return (
     <>
-      <MyComponentReducer />
+      <MyComponentOne />
+      <p>----------------------------------------------------------------</p>
+      <p>----------------------------------------------------------------</p>
+      <MyComponentTwo />
     </>
   );
 }
 
 export default App;
+
+//
+
+//
+//
+//useReducer
+
+// import { MyComponentReducer } from "./use-reducer/MyComponent1";
+
+// function App() {
+//   return (
+//     <>
+//       <MyComponentReducer />
+//     </>
+//   );
+// }
+
+// export default App;
 
 //
 //
