@@ -1,22 +1,67 @@
-import { MyComponentOne } from "./use-custom/MyComponentOne";
-import { MyComponentTwo } from "./use-custom/MyComponentTwo";
+// import { UpdateUser } from "./utility-types/Partial";
+// import { UserCard } from "./utility-types/Pick";
+// import { UserInfo } from "./utility-types/Omit";
+// import { Button } from "./utility-types/ButtonComponent";
+// import { MyButton } from "./utility-types/UsingButton";
 
-function App() {
-  return (
-    <>
-      <MyComponentOne />
-      <p>----------------------------------------------------------------</p>
-      <p>----------------------------------------------------------------</p>
-      <MyComponentTwo />
-    </>
-  );
-}
+// function App() {
+//   return (
+//     <>
+//       <UpdateUser name="John" />
+//       <p>----------------------------------------------------------------</p>
+//       <p>----------------------------------------------------------------</p>
+//       <UserCard name="Ranjan" email="abc@gmail.com" />
+//       <p>----------------------------------------------------------------</p>
+//       <p>----------------------------------------------------------------</p>
+//       <UserInfo name="Ranjan" contact={9801114525} />
+//       <p>----------------------------------------------------------------</p>
+//       <p>----------------------------------------------------------------</p>
+//       <Button text="Submit" color="red" />
+//       <br />
+//       <br />
+//       <MyButton text="Submit" color="green" />
+//     </>
+//   );
+// }
+// export default App;
 
-export default App;
+//
+//
+// customHooks
+//
+// import { MyComponentOne } from "./use-custom/MyComponentOne";
+// import { MyComponentTwo } from "./use-custom/MyComponentTwo";
+
+// function App() {
+//   return (
+//     <>
+//       <MyComponentOne />
+//       <p>----------------------------------------------------------------</p>
+//       <p>----------------------------------------------------------------</p>
+//       <MyComponentTwo />
+//     </>
+//   );
+// }
+
+// export default App;
 
 //
 
 //
+
+// fetch
+
+// import { Fetch } from "./typing-api/Fetch";
+
+// function App() {
+//   return (
+//     <>
+//       <Fetch />
+//     </>
+//   );
+// }
+// export default App;
+
 //
 //useReducer
 
