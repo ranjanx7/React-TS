@@ -1,4 +1,4 @@
-//useContext lets components access shared data without passing props through every level.
+// useContext lets components access shared data without passing props through every level.
 //provider component
 //consumer component
 
@@ -21,6 +21,12 @@ export function ComponentA() {
     </div>
   );
 }
+
+//
+
+//
+
+//
 
 //
 

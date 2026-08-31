@@ -1,3 +1,5 @@
+//The most common use of useRef is accessing a DOM element directly.
+
 import { useRef } from "react";
 
 export function MyComponentTwo() {

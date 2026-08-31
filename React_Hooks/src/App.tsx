@@ -32,15 +32,15 @@ export default App;
 
 //
 //
-// //useContext
-//
+//useContext
+
 // import { ComponentOne } from "./props-drilling/ComponentOne";
 // import { ComponentA } from "./use-context/ComponentA";
 
 // function App() {
 //   return (
 //     <>
-//       <ComponentOne />
+//       {/* <ComponentOne /> */}
 //       <p>----------------------------------------------------------------</p>
 //       <p>----------------------------------------------------------------</p>
 
