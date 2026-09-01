@@ -29,21 +29,21 @@
 //
 // customHooks
 //
-// import { MyComponentOne } from "./use-custom/MyComponentOne";
-// import { MyComponentTwo } from "./use-custom/MyComponentTwo";
+import { MyComponentOne } from "./use-custom/MyComponentOne";
+import { MyComponentTwo } from "./use-custom/MyComponentTwo";
 
-// function App() {
-//   return (
-//     <>
-//       <MyComponentOne />
-//       <p>----------------------------------------------------------------</p>
-//       <p>----------------------------------------------------------------</p>
-//       <MyComponentTwo />
-//     </>
-//   );
-// }
+function App() {
+  return (
+    <>
+      <MyComponentOne />
+      <p>----------------------------------------------------------------</p>
+      <p>----------------------------------------------------------------</p>
+      <MyComponentTwo />
+    </>
+  );
+}
 
-// export default App;
+export default App;
 
 //
 
