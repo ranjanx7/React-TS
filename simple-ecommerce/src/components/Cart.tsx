@@ -1,15 +1,18 @@
 import { useState } from "react";
-import type { CartItem } from "../types/product";
+import { useCartContext } from "../context/CartContext";
 
 interface CartProps {
-  cart: CartItem[];
-  onRemove: (id: number) => void;
-  onIncrease: (id: number) => void;
-  onDecrease: (id: number) => void;
   onBuy: (selectedIds: number[]) => void;
 }
 
-function Cart({ cart, onRemove, onIncrease, onDecrease, onBuy }: CartProps) {
+function Cart({ onBuy }: CartProps) {
+  const {
+    cart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeSelectedFromCart,
+  } = useCartContext();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   function handleSelect(id: number) {
@@ -22,11 +25,38 @@ function Cart({ cart, onRemove, onIncrease, onDecrease, onBuy }: CartProps) {
     });
   }
 
+  function handleDeleteSelected() {
+    if (
+      window.confirm("Are you sure you want to remove these selected items?")
+    ) {
+      removeSelectedFromCart(selectedIds);
+      setSelectedIds([]);
+      setTimeout(() => {
+        alert("Selected items removed successfully!");
+      }, 1000);
+    }
+  }
+
+  function handleRemoveItem(id: number) {
+    if (window.confirm("Are you sure you want to remove this item?")) {
+      removeFromCart(id);
+      setTimeout(() => {
+        alert("Item removed successfully!");
+      }, 1000);
+    }
+  }
+
+  const selectedItems = cart.filter((item) => selectedIds.includes(item.id));
+  const selectedTotal = selectedItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+
   if (cart.length === 0) {
     return (
-      <div>
-        <h2>Cart</h2>
-        <p>Your cart is empty.</p>
+      <div className="help-support">
+        <h2>Your Cart is Empty</h2>
+        <p>Add items to your cart to checkout</p>
       </div>
     );
   }
@@ -35,8 +65,15 @@ function Cart({ cart, onRemove, onIncrease, onDecrease, onBuy }: CartProps) {
     <div className="cart">
       <h2>Cart</h2>
 
+      <div className="cart-summary">
+        <p>Total Types of Products: {cart.length}</p>
+        {selectedIds.length > 0 && (
+          <p className="price">Selected Total: Nrs.{selectedTotal}</p>
+        )}
+      </div>
+
       {cart.map((item) => (
-        <div key={item.id}>
+        <div key={item.id} className="cart-item">
           <input
             type="checkbox"
             checked={selectedIds.includes(item.id)}
@@ -45,24 +82,52 @@ function Cart({ cart, onRemove, onIncrease, onDecrease, onBuy }: CartProps) {
 
           <h3>{item.name}</h3>
 
-          <p>Price: Nrs.{item.price}</p>
+          <p className="price">Nrs.{item.price}</p>
 
-          <button onClick={() => onDecrease(item.id)}>-</button>
+          <div className="cart-actions">
+            <button
+              className="quantity-btn"
+              onClick={() => decreaseQuantity(item.id)}
+            >
+              -
+            </button>
 
-          <span> {item.quantity} </span>
+            <span className="quantity">{item.quantity}</span>
 
-          <button onClick={() => onIncrease(item.id)}>+</button>
+            <button
+              className="quantity-btn"
+              onClick={() => increaseQuantity(item.id)}
+            >
+              +
+            </button>
 
-          <button onClick={() => onRemove(item.id)}>Remove</button>
+            <button
+              className="remove-btn"
+              onClick={() => handleRemoveItem(item.id)}
+            >
+              Remove
+            </button>
+          </div>
         </div>
       ))}
 
-      <button
-        disabled={selectedIds.length === 0}
-        onClick={() => onBuy(selectedIds)}
-      >
-        Buy Selected
-      </button>
+      <div className="cart-buttons">
+        <button
+          className="remove-btn"
+          disabled={selectedIds.length === 0}
+          onClick={handleDeleteSelected}
+        >
+          Delete Selected
+        </button>
+
+        <button
+          className="buy-btn"
+          disabled={selectedIds.length === 0}
+          onClick={() => onBuy(selectedIds)}
+        >
+          Buy Selected
+        </button>
+      </div>
     </div>
   );
 }

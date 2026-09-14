@@ -5,6 +5,7 @@ import type { CartItem } from "../types/product";
 interface CheckoutFormProps {
   products: CartItem[];
   onOrderComplete: () => void;
+  onBack: () => void;
 }
 
 interface CheckoutFormData {
@@ -14,7 +15,11 @@ interface CheckoutFormData {
   address: string;
 }
 
-function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
+function CheckoutForm({
+  products,
+  onOrderComplete,
+  onBack,
+}: CheckoutFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -33,7 +38,6 @@ function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
     setIsSubmitting(true);
     setSubmitError("");
 
-    // Format the cart items so they are easily readable in the Formspree email
     const orderSummary = products.map(
       (item) =>
         `${item.name} × ${item.quantity} = Nrs.${item.price * item.quantity}`,
@@ -66,21 +70,33 @@ function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
   }
 
   return (
-    <div className="checkout">
-      <h2>Checkout</h2>
+    <div className="cart">
+      <div className="cart-header">
+        <button className="back-btn" onClick={onBack}>
+          ← Back to Cart
+        </button>
+        <h2>Checkout</h2>
+      </div>
 
-      {/* Selected Products */}
+      <div className="cart-summary">
+        <p>Total Types of Products: {products.length}</p>
+        <p className="price">Order Total: Nrs.{total}</p>
+      </div>
+
       <h3>Order Summary</h3>
       {products.map((item) => (
-        <div key={item.id}>
-          <p>
-            {item.name} × {item.quantity} = Nrs.{item.price * item.quantity}
-          </p>
+        <div key={item.id} className="cart-item">
+          <h3>{item.name}</h3>
+
+          <p className="price">Nrs.{item.price}</p>
+
+          <div className="cart-actions">
+            <span className="quantity">{item.quantity}</span>
+          </div>
         </div>
       ))}
-      <h3>Total: Nrs.{total}</h3>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="checkout">
         <div>
           <label>Name</label>
           <br />
@@ -88,7 +104,7 @@ function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
             {...register("name", { required: "Name is required" })}
             disabled={isSubmitting}
           />
-          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+          {errors.name && <p className="error">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -99,9 +115,7 @@ function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
             {...register("email", { required: "Email is required" })}
             disabled={isSubmitting}
           />
-          {errors.email && (
-            <p style={{ color: "red" }}>{errors.email.message}</p>
-          )}
+          {errors.email && <p className="error">{errors.email.message}</p>}
         </div>
 
         <div>
@@ -111,9 +125,7 @@ function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
             {...register("phone", { required: "Phone is required" })}
             disabled={isSubmitting}
           />
-          {errors.phone && (
-            <p style={{ color: "red" }}>{errors.phone.message}</p>
-          )}
+          {errors.phone && <p className="error">{errors.phone.message}</p>}
         </div>
 
         <div>
@@ -123,18 +135,18 @@ function CheckoutForm({ products, onOrderComplete }: CheckoutFormProps) {
             {...register("address", { required: "Address is required" })}
             disabled={isSubmitting}
           />
-          {errors.address && (
-            <p style={{ color: "red" }}>{errors.address.message}</p>
-          )}
+          {errors.address && <p className="error">{errors.address.message}</p>}
         </div>
 
         <br />
 
-        {submitError && <p style={{ color: "red" }}>{submitError}</p>}
+        {submitError && <p className="error">{submitError}</p>}
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Placing Order..." : "Place Order"}
-        </button>
+        <div className="cart-buttons">
+          <button type="submit" disabled={isSubmitting} className="buy-btn">
+            {isSubmitting ? "Placing Order..." : "Place Order"}
+          </button>
+        </div>
       </form>
     </div>
   );

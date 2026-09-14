@@ -1,7 +1,20 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
+import type { ReactNode } from "react";
 import type { Product, CartItem } from "../types/product";
 
-export function useCart() {
+interface CartContextType {
+  cart: CartItem[];
+  addToCart: (product: Product) => void;
+  removeFromCart: (id: number) => void;
+  increaseQuantity: (id: number) => void;
+  decreaseQuantity: (id: number) => void;
+  getTotal: () => number;
+  removeSelectedFromCart: (selectedIds: number[]) => void;
+}
+
+const CartContext = createContext<CartContextType | undefined>(undefined);
+
+export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   function addToCart(product: Product) {
@@ -36,11 +49,11 @@ export function useCart() {
 
   function decreaseQuantity(id: number) {
     setCart((currentCart) =>
-      currentCart
-        .map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
-        )
-        .filter((item) => item.quantity > 0),
+      currentCart.map((item) =>
+        item.id === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
     );
   }
 
@@ -54,13 +67,27 @@ export function useCart() {
     );
   }
 
-  return {
-    cart,
-    addToCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
-    getTotal,
-    removeSelectedFromCart,
-  };
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        increaseQuantity,
+        decreaseQuantity,
+        getTotal,
+        removeSelectedFromCart,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+}
+
+export function useCartContext() {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error("useCartContext must be used within a CartProvider");
+  }
+  return context;
 }

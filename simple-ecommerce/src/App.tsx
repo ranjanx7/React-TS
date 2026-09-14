@@ -1,31 +1,25 @@
 import { useState } from "react";
-import ProductCard from "./components/ProductCard";
+
+import Navbar from "./components/Navbar";
+import Home from "./components/HomeProduct";
 import Cart from "./components/Cart";
+import HelpSupport from "./components/HelpSupport";
 import CheckoutForm from "./components/CheckoutForm";
+import Footer from "./components/Footer";
+
 import { products } from "./data/products";
-import { useCart } from "./hooks/useCart";
+import { useCartContext } from "./context/CartContext";
 import type { CartItem } from "./types/product";
+
 import "./App.css";
 
 function App() {
-  const [search, setSearch] = useState("");
+  const [page, setPage] = useState("home");
 
   const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false);
 
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
-    removeSelectedFromCart,
-  } = useCart();
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const { cart, removeSelectedFromCart } = useCartContext();
 
   function handleBuy(selectedIds: number[]) {
     if (selectedIds.length === 0) {
@@ -36,7 +30,6 @@ function App() {
 
     setSelectedProducts(selected);
     setShowCheckout(true);
-    setOrderPlaced(false);
   }
 
   function handleOrderComplete() {
@@ -46,54 +39,28 @@ function App() {
 
     setSelectedProducts([]);
     setShowCheckout(false);
-    setOrderPlaced(true);
+
+    alert("Your order has been placed successfully.");
+  }
+
+  function handleBackToCart() {
+    setShowCheckout(false);
   }
 
   return (
     <div>
-      <h1>Simple Shop</h1>
-
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <h2>Products</h2>
-
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onAddToCart={addToCart}
-          />
-        ))}
-      </div>
-
-      <Cart
-        cart={cart}
-        onRemove={removeFromCart}
-        onIncrease={increaseQuantity}
-        onDecrease={decreaseQuantity}
-        onBuy={handleBuy}
-      />
-
-      {showCheckout && (
+      <Navbar onNavigate={setPage} />
+      {page === "home" && <Home products={products} />}
+      {page === "cart" && !showCheckout && <Cart onBuy={handleBuy} />}
+      {page === "cart" && showCheckout && (
         <CheckoutForm
           products={selectedProducts}
           onOrderComplete={handleOrderComplete}
+          onBack={handleBackToCart}
         />
       )}
-
-      {orderPlaced && (
-        <div>
-          <h2>Order Confirmed! 🎉</h2>
-          <p>Thank you for your order.</p>
-          <p>Your order has been placed successfully.</p>
-        </div>
-      )}
+      {page === "help" && <HelpSupport />}
+      <Footer />
     </div>
   );
 }
