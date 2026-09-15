@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types/product";
 import { useCartContext } from "../context/CartContext";
+import { ShoppingCartOutlined, EyeOutlined } from "@ant-design/icons";
+import { Modal, message } from "antd";
 
 interface HomeProps {
   products: Product[];
@@ -17,6 +19,9 @@ function Home({ products }: HomeProps) {
   const [disabledButtons, setDisabledButtons] = useState<Set<number>>(
     new Set(),
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   // Debounce search
   useEffect(() => {
@@ -47,6 +52,7 @@ function Home({ products }: HomeProps) {
   function handleAddToCart(product: Product) {
     setDisabledButtons((prev) => new Set(prev).add(product.id));
     addToCart(product);
+    message.success(`${product.name} added to cart!`);
 
     setTimeout(() => {
       setDisabledButtons((prev) => {
@@ -55,6 +61,16 @@ function Home({ products }: HomeProps) {
         return next;
       });
     }, 3000);
+  }
+
+  function handleViewDetails(product: Product) {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  }
+
+  function handleCloseModal() {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
   }
 
   return (
@@ -94,15 +110,61 @@ function Home({ products }: HomeProps) {
             <p>Category: {product.category}</p>
             <p className="price">Nrs.{product.price}</p>
 
-            <button
-              onClick={() => handleAddToCart(product)}
-              disabled={disabledButtons.has(product.id)}
-            >
-              {disabledButtons.has(product.id) ? "Item Added!" : "Add to Cart"}
-            </button>
+            <div className="button-group">
+              <button
+                onClick={() => handleViewDetails(product)}
+                className="view-details-btn"
+              >
+                <EyeOutlined /> View
+              </button>
+              <button
+                onClick={() => handleAddToCart(product)}
+                disabled={disabledButtons.has(product.id)}
+              >
+                {disabledButtons.has(product.id) ? (
+                  <>
+                    <ShoppingCartOutlined /> Added!
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCartOutlined /> Add to Cart
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         ))}
       </div>
+
+      <Modal
+        title={selectedProduct?.name}
+        open={isModalOpen}
+        onCancel={handleCloseModal}
+        footer={null}
+        width={600}
+      >
+        {selectedProduct && (
+          <div className="product-details">
+            <img
+              src={selectedProduct.image}
+              alt={selectedProduct.name}
+              style={{ width: "100%", maxWidth: "400px", marginBottom: "20px" }}
+            />
+            <p>
+              <strong>Category:</strong> {selectedProduct.category}
+            </p>
+            <p>
+              <strong>Price:</strong> Nrs.{selectedProduct.price}
+            </p>
+            <p>
+              <strong>Product ID:</strong> {selectedProduct.id}
+            </p>
+            <p>
+              <strong>Description:</strong> {selectedProduct.description}
+            </p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

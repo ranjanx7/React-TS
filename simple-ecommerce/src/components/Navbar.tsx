@@ -4,51 +4,45 @@ import {
   ShoppingCartOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
+import { Link, useLocation } from "react-router-dom";
 
 import { useCartContext } from "../context/CartContext";
 
-interface NavbarProps {
-  onNavigate: (page: string) => void;
-  currentPage: string;
-}
-
-function Navbar({ onNavigate, currentPage }: NavbarProps) {
+function Navbar() {
   const { cart } = useCartContext();
+  const location = useLocation();
 
   return (
     <nav className="navbar">
-      <h2 className="navbar-logo" onClick={() => onNavigate("home")}>
+      <Link to="/" className="navbar-logo">
         Daraz
-      </h2>
+      </Link>
 
       <div className="navbar-links">
-        <button
-          onClick={() => onNavigate("home")}
-          className={currentPage === "home" ? "active" : ""}
-        >
+        <Link to="/" className={location.pathname === "/" ? "active" : ""}>
           <HomeOutlined />
-        </button>
+        </Link>
 
-        <button
-          onClick={() => onNavigate("products")}
-          className={currentPage === "products" ? "active" : ""}
+        <Link
+          to="/products"
+          className={location.pathname === "/products" ? "active" : ""}
         >
           <ShopOutlined />
-        </button>
+        </Link>
 
-        <button
-          onClick={() => onNavigate("cart")}
-          className={currentPage === "cart" ? "active" : ""}
+        <Link
+          to="/cart"
+          className={location.pathname === "/cart" ? "active" : ""}
         >
           <ShoppingCartOutlined />({cart.length})
-        </button>
+        </Link>
 
-        <button
-          onClick={() => onNavigate("help")}
-          className={currentPage === "help" ? "active" : ""}
+        <Link
+          to="/help"
+          className={location.pathname === "/help" ? "active" : ""}
         >
           <QuestionCircleOutlined />
-        </button>
+        </Link>
       </div>
     </nav>
   );

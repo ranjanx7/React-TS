@@ -5,12 +5,9 @@ import {
   CustomerServiceOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
-interface LandingPageProps {
-  onNavigate: (page: string) => void;
-}
-
-function LandingPage({ onNavigate }: LandingPageProps) {
+function LandingPage() {
   return (
     <div className="landing-page">
       <div className="hero-section">
@@ -20,9 +17,9 @@ function LandingPage({ onNavigate }: LandingPageProps) {
             Discover top-quality electronics, fashion, accessories and more at
             unbelievable prices.
           </p>
-          <button className="cta-button" onClick={() => onNavigate("products")}>
+          <Link to="/products" className="cta-button">
             Shop Now <ArrowRightOutlined />
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -70,12 +67,9 @@ function LandingPage({ onNavigate }: LandingPageProps) {
       <div className="landing-cta-banner">
         <h2>Ready to Explore Our Catalog?</h2>
         <p>Check out our latest arrivals and exclusive deals today.</p>
-        <button
-          className="secondary-cta-button"
-          onClick={() => onNavigate("products")}
-        >
+        <Link to="/products" className="secondary-cta-button">
           Browse Products
-        </button>
+        </Link>
       </div>
     </div>
   );

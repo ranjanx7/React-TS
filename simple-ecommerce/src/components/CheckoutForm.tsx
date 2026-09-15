@@ -6,6 +6,7 @@ import {
   checkoutSchema,
   type CheckoutFormData,
 } from "../schemas/checkoutSchema";
+import { message } from "antd";
 
 interface CheckoutFormProps {
   products: CartItem[];
@@ -58,11 +59,14 @@ function CheckoutForm({
       });
 
       if (response.ok) {
+        message.success("Order placed successfully!");
         onOrderComplete();
       } else {
+        message.error("Failed to submit the order. Please try again.");
         setSubmitError("Failed to submit the order. Please try again.");
       }
     } catch (error) {
+      message.error("A network error occurred. Please try again.");
       setSubmitError("A network error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import LandingPage from "./components/LandingPage";
@@ -14,11 +15,10 @@ import type { CartItem } from "./types/product";
 
 import "./App.css";
 
-function App() {
-  const [page, setPage] = useState("home");
-
+function AppContent() {
   const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
+  const navigate = useNavigate();
 
   const { cart, removeSelectedFromCart } = useCartContext();
 
@@ -40,8 +40,7 @@ function App() {
 
     setSelectedProducts([]);
     setShowCheckout(false);
-
-    alert("Your order has been placed successfully.");
+    navigate("/cart");
   }
 
   function handleBackToCart() {
@@ -50,20 +49,36 @@ function App() {
 
   return (
     <div>
-      <Navbar onNavigate={setPage} currentPage={page} />
-      {page === "home" && <LandingPage onNavigate={setPage} />}
-      {page === "products" && <Home products={products} />}
-      {page === "cart" && !showCheckout && <Cart onBuy={handleBuy} />}
-      {page === "cart" && showCheckout && (
-        <CheckoutForm
-          products={selectedProducts}
-          onOrderComplete={handleOrderComplete}
-          onBack={handleBackToCart}
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/products" element={<Home products={products} />} />
+        <Route
+          path="/cart"
+          element={
+            !showCheckout ? (
+              <Cart onBuy={handleBuy} />
+            ) : (
+              <CheckoutForm
+                products={selectedProducts}
+                onOrderComplete={handleOrderComplete}
+                onBack={handleBackToCart}
+              />
+            )
+          }
         />
-      )}
-      {page === "help" && <HelpSupport />}
+        <Route path="/help" element={<HelpSupport />} />
+      </Routes>
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
 

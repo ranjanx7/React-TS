@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCartContext } from "../context/CartContext";
+import { message } from "antd";
 
 interface CartProps {
   onBuy: (selectedIds: number[]) => void;
@@ -29,26 +30,24 @@ function Cart({ onBuy }: CartProps) {
     if (window.confirm("Are you sure you want to clear your cart?")) {
       clearCart();
       setSelectedIds([]);
-      setTimeout(() => {
-        alert("Cart cleared successfully!");
-      }, 1000);
+      message.success("Cart cleared successfully!");
     }
   }
 
   function handleRemoveItem(id: number) {
     if (window.confirm("Are you sure you want to remove this item?")) {
       removeFromCart(id);
-      setTimeout(() => {
-        alert("Item removed successfully!");
-      }, 1000);
+      message.success("Item removed successfully!");
     }
   }
 
   const selectedItems = cart.filter((item) => selectedIds.includes(item.id));
+
   const selectedTotal = selectedItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+
   const cartTotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,

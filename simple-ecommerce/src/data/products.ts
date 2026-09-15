@@ -7,6 +7,7 @@ export const products: Product[] = [
     price: 80000,
     category: "Electronics",
     image: "/src/assets/laptop.jpg",
+    description: "Powerful 2-in-1 laptop with 12th Gen Intel Core i7 processor, 16GB RAM, and 512GB SSD. Perfect for work and creativity with its 360-degree hinge and touchscreen display.",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const products: Product[] = [
     price: 1200,
     category: "Clothing",
     image: "/src/assets/shirt.jpg",
+    description: "Comfortable and stylish men's t-shirt made from 100% cotton. Perfect for casual wear with a modern fit and breathable fabric.",
   },
   {
     id: 3,
@@ -21,6 +23,7 @@ export const products: Product[] = [
     price: 1800,
     category: "Shoes",
     image: "/src/assets/shoes.jpg",
+    description: "Classic Nike Dunk Low sneakers with premium leather upper, responsive cushioning, and iconic colorway. Great for everyday wear.",
   },
   {
     id: 4,
@@ -28,6 +31,7 @@ export const products: Product[] = [
     price: 850,
     category: "Electronics",
     image: "/src/assets/head.png",
+    description: "High-quality gaming headset with 7.1 surround sound, noise-canceling microphone, and comfortable memory foam ear cushions for long gaming sessions.",
   },
   {
     id: 5,
@@ -35,6 +39,7 @@ export const products: Product[] = [
     price: 45000,
     category: "Electronics",
     image: "/src/assets/phone.jpg",
+    description: "Stunning smartphone with 64MP front camera, color-changing back panel, 8GB RAM, and 128GB storage. Perfect for photography enthusiasts.",
   },
   {
     id: 6,
@@ -42,6 +47,7 @@ export const products: Product[] = [
     price: 3500,
     category: "Clothing",
     image: "/src/assets/jacket.jpg",
+    description: "Warm and stylish winter jacket in vibrant red. Features water-resistant fabric, thermal insulation, and multiple pockets for convenience.",
   },
   {
     id: 7,
@@ -49,6 +55,7 @@ export const products: Product[] = [
     price: 2200,
     category: "Accessories",
     image: "/src/assets/backpack.jpg",
+    description: "Premium leather backpack with spacious compartments, padded laptop sleeve, and comfortable shoulder straps. Perfect for work and travel.",
   },
   {
     id: 8,
@@ -56,6 +63,7 @@ export const products: Product[] = [
     price: 6500,
     category: "Electronics",
     image: "/src/assets/watch.jpg",
+    description: "Feature-rich smartwatch with heart rate monitoring, GPS tracking, 7-day battery life, and water resistance. Compatible with both iOS and Android.",
   },
   {
     id: 9,
@@ -63,6 +71,7 @@ export const products: Product[] = [
     price: 4200,
     category: "Shoes",
     image: "/src/assets/running-shoes.jpg",
+    description: "Lightweight running shoes with advanced cushioning technology, breathable mesh upper, and durable rubber outsole for optimal performance.",
   },
   {
     id: 10,
@@ -70,5 +79,6 @@ export const products: Product[] = [
     price: 1500,
     category: "Accessories",
     image: "/src/assets/sunglasses.jpg",
+    description: "Stylish polarized sunglasses with UV400 protection, lightweight frame, and scratch-resistant lenses. Perfect for outdoor activities.",
   },
 ];
