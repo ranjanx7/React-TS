@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Navbar from "./components/Navbar";
+import LandingPage from "./components/LandingPage";
 import Home from "./components/HomeProduct";
 import Cart from "./components/Cart";
 import HelpSupport from "./components/HelpSupport";
@@ -49,8 +50,9 @@ function App() {
 
   return (
     <div>
-      <Navbar onNavigate={setPage} />
-      {page === "home" && <Home products={products} />}
+      <Navbar onNavigate={setPage} currentPage={page} />
+      {page === "home" && <LandingPage onNavigate={setPage} />}
+      {page === "products" && <Home products={products} />}
       {page === "cart" && !showCheckout && <Cart onBuy={handleBuy} />}
       {page === "cart" && showCheckout && (
         <CheckoutForm

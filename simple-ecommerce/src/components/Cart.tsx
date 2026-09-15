@@ -11,7 +11,7 @@ function Cart({ onBuy }: CartProps) {
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
-    removeSelectedFromCart,
+    clearCart,
   } = useCartContext();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
@@ -25,14 +25,12 @@ function Cart({ onBuy }: CartProps) {
     });
   }
 
-  function handleDeleteSelected() {
-    if (
-      window.confirm("Are you sure you want to remove these selected items?")
-    ) {
-      removeSelectedFromCart(selectedIds);
+  function handleClearCart() {
+    if (window.confirm("Are you sure you want to clear your cart?")) {
+      clearCart();
       setSelectedIds([]);
       setTimeout(() => {
-        alert("Selected items removed successfully!");
+        alert("Cart cleared successfully!");
       }, 1000);
     }
   }
@@ -48,6 +46,10 @@ function Cart({ onBuy }: CartProps) {
 
   const selectedItems = cart.filter((item) => selectedIds.includes(item.id));
   const selectedTotal = selectedItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+  const cartTotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
@@ -67,6 +69,7 @@ function Cart({ onBuy }: CartProps) {
 
       <div className="cart-summary">
         <p>Total Types of Products: {cart.length}</p>
+        <p className="price">Cart Total: Nrs.{cartTotal}</p>
         {selectedIds.length > 0 && (
           <p className="price">Selected Total: Nrs.{selectedTotal}</p>
         )}
@@ -112,12 +115,8 @@ function Cart({ onBuy }: CartProps) {
       ))}
 
       <div className="cart-buttons">
-        <button
-          className="remove-btn"
-          disabled={selectedIds.length === 0}
-          onClick={handleDeleteSelected}
-        >
-          Delete Selected
+        <button className="remove-btn" onClick={handleClearCart}>
+          Clear Cart
         </button>
 
         <button

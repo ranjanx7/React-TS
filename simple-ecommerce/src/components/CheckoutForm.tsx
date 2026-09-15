@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { CartItem } from "../types/product";
+import {
+  checkoutSchema,
+  type CheckoutFormData,
+} from "../schemas/checkoutSchema";
 
 interface CheckoutFormProps {
   products: CartItem[];
   onOrderComplete: () => void;
   onBack: () => void;
-}
-
-interface CheckoutFormData {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
 }
 
 function CheckoutForm({
@@ -27,7 +25,9 @@ function CheckoutForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CheckoutFormData>();
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
+  });
 
   const total = products.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -100,41 +100,28 @@ function CheckoutForm({
         <div>
           <label>Name</label>
           <br />
-          <input
-            {...register("name", { required: "Name is required" })}
-            disabled={isSubmitting}
-          />
+          <input {...register("name")} disabled={isSubmitting} />
           {errors.name && <p className="error">{errors.name.message}</p>}
         </div>
 
         <div>
           <label>Email</label>
           <br />
-          <input
-            type="email"
-            {...register("email", { required: "Email is required" })}
-            disabled={isSubmitting}
-          />
+          <input type="email" {...register("email")} disabled={isSubmitting} />
           {errors.email && <p className="error">{errors.email.message}</p>}
         </div>
 
         <div>
           <label>Phone</label>
           <br />
-          <input
-            {...register("phone", { required: "Phone is required" })}
-            disabled={isSubmitting}
-          />
+          <input {...register("phone")} disabled={isSubmitting} />
           {errors.phone && <p className="error">{errors.phone.message}</p>}
         </div>
 
         <div>
           <label>Address</label>
           <br />
-          <input
-            {...register("address", { required: "Address is required" })}
-            disabled={isSubmitting}
-          />
+          <input {...register("address")} disabled={isSubmitting} />
           {errors.address && <p className="error">{errors.address.message}</p>}
         </div>
 
