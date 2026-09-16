@@ -3,6 +3,7 @@ import {
   ShopOutlined,
   ShoppingCartOutlined,
   QuestionCircleOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 
@@ -42,6 +43,13 @@ function Navbar() {
           className={location.pathname === "/help" ? "active" : ""}
         >
           <QuestionCircleOutlined />
+        </Link>
+
+        <Link
+          to="/admin"
+          className={location.pathname === "/admin" ? "active" : ""}
+        >
+          <SettingOutlined />
         </Link>
       </div>
     </nav>

@@ -8,37 +8,28 @@ import Cart from "./components/Cart";
 import HelpSupport from "./components/HelpSupport";
 import CheckoutForm from "./components/CheckoutForm";
 import Footer from "./components/Footer";
+import Admin from "./components/Admin";
 
-import { products } from "./data/products";
-import { useCartContext } from "./context/CartContext";
-import type { CartItem } from "./types/product";
+import { CartProvider, useCartContext } from "./context/CartContext";
+import { ProductProvider } from "./context/ProductContext";
 
 import "./App.css";
 
 function AppContent() {
-  const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const navigate = useNavigate();
 
-  const { cart, removeSelectedFromCart } = useCartContext();
+  const { cart, clearCart } = useCartContext();
 
-  function handleBuy(selectedIds: number[]) {
-    if (selectedIds.length === 0) {
+  function handleBuy() {
+    if (cart.length === 0) {
       return;
     }
-
-    const selected = cart.filter((item) => selectedIds.includes(item.id));
-
-    setSelectedProducts(selected);
     setShowCheckout(true);
   }
 
   function handleOrderComplete() {
-    const selectedIds = selectedProducts.map((item) => item.id);
-
-    removeSelectedFromCart(selectedIds);
-
-    setSelectedProducts([]);
+    clearCart();
     setShowCheckout(false);
     navigate("/cart");
   }
@@ -52,7 +43,7 @@ function AppContent() {
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/products" element={<Home products={products} />} />
+        <Route path="/products" element={<Home />} />
         <Route
           path="/cart"
           element={
@@ -60,7 +51,7 @@ function AppContent() {
               <Cart onBuy={handleBuy} />
             ) : (
               <CheckoutForm
-                products={selectedProducts}
+                products={cart}
                 onOrderComplete={handleOrderComplete}
                 onBack={handleBackToCart}
               />
@@ -68,6 +59,7 @@ function AppContent() {
           }
         />
         <Route path="/help" element={<HelpSupport />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
     </div>
@@ -77,7 +69,11 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <CartProvider>
+        <ProductProvider>
+          <AppContent />
+        </ProductProvider>
+      </CartProvider>
     </BrowserRouter>
   );
 }

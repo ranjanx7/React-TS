@@ -9,7 +9,6 @@ interface CartContextType {
   increaseQuantity: (id: number) => void;
   decreaseQuantity: (id: number) => void;
   getTotal: () => number;
-  removeSelectedFromCart: (selectedIds: number[]) => void;
   clearCart: () => void;
 }
 
@@ -62,12 +61,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 
-  function removeSelectedFromCart(selectedIds: number[]) {
-    setCart((currentCart) =>
-      currentCart.filter((item) => !selectedIds.includes(item.id)),
-    );
-  }
-
   function clearCart() {
     setCart([]);
   }
@@ -81,7 +74,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         increaseQuantity,
         decreaseQuantity,
         getTotal,
-        removeSelectedFromCart,
         clearCart,
       }}
     >

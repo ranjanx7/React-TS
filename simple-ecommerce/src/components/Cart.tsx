@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useCartContext } from "../context/CartContext";
 import { message } from "antd";
 
 interface CartProps {
-  onBuy: (selectedIds: number[]) => void;
+  onBuy: () => void;
 }
 
 function Cart({ onBuy }: CartProps) {
@@ -14,22 +13,10 @@ function Cart({ onBuy }: CartProps) {
     decreaseQuantity,
     clearCart,
   } = useCartContext();
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-  function handleSelect(id: number) {
-    setSelectedIds((currentIds) => {
-      if (currentIds.includes(id)) {
-        return currentIds.filter((selectedId) => selectedId !== id);
-      }
-
-      return [...currentIds, id];
-    });
-  }
 
   function handleClearCart() {
     if (window.confirm("Are you sure you want to clear your cart?")) {
       clearCart();
-      setSelectedIds([]);
       message.success("Cart cleared successfully!");
     }
   }
@@ -40,13 +27,6 @@ function Cart({ onBuy }: CartProps) {
       message.success("Item removed successfully!");
     }
   }
-
-  const selectedItems = cart.filter((item) => selectedIds.includes(item.id));
-
-  const selectedTotal = selectedItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
 
   const cartTotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -69,19 +49,10 @@ function Cart({ onBuy }: CartProps) {
       <div className="cart-summary">
         <p>Total Types of Products: {cart.length}</p>
         <p className="price">Cart Total: Nrs.{cartTotal}</p>
-        {selectedIds.length > 0 && (
-          <p className="price">Selected Total: Nrs.{selectedTotal}</p>
-        )}
       </div>
 
       {cart.map((item) => (
         <div key={item.id} className="cart-item">
-          <input
-            type="checkbox"
-            checked={selectedIds.includes(item.id)}
-            onChange={() => handleSelect(item.id)}
-          />
-
           <h3>{item.name}</h3>
 
           <p className="price">Nrs.{item.price}</p>
@@ -118,12 +89,8 @@ function Cart({ onBuy }: CartProps) {
           Clear Cart
         </button>
 
-        <button
-          className="buy-btn"
-          disabled={selectedIds.length === 0}
-          onClick={() => onBuy(selectedIds)}
-        >
-          Buy Selected
+        <button className="buy-btn" onClick={onBuy}>
+          Checkout All
         </button>
       </div>
     </div>

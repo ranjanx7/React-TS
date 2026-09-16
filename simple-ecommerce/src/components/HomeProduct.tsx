@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types/product";
 import { useCartContext } from "../context/CartContext";
+import { useProductContext } from "../context/ProductContext";
 import { ShoppingCartOutlined, EyeOutlined } from "@ant-design/icons";
 import { Modal, message } from "antd";
 
-interface HomeProps {
-  products: Product[];
-}
-
-function Home({ products }: HomeProps) {
+function Home() {
   const { addToCart } = useCartContext();
+  const { products } = useProductContext();
 
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
