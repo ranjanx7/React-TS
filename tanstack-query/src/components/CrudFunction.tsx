@@ -21,6 +21,8 @@ function CRUD() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
   });
 
   // ==================== EDITING ID ====================
