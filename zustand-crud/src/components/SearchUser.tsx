@@ -15,12 +15,13 @@ function SearchUser({ setSearch }: SearchUserProps) {
   };
 
   return (
-    <div className="search">
+    <div className="w-full max-w-md mx-auto mb-6">
       <input
         type="text"
         placeholder="Search by name or email..."
         value={value}
         onChange={handleChange}
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
       />
     </div>
   );
