@@ -1,0 +1,1404 @@
+# User Management CRUD Module
+
+Build a clean, beginner-friendly, production-style **User Management CRUD Module** using:
+
+* React
+* TypeScript
+* React Hook Form
+* Zod
+* Ant Design
+* Ant Design Table
+* TanStack Query
+* Axios
+* Zustand
+* Tailwind CSS
+
+The goal is to build a realistic CRUD module while learning how to properly separate:
+
+* Form state
+* Validation
+* Server/API state
+* Client/UI state
+* API logic
+* UI components
+
+---
+
+# 1. Technology Responsibilities
+
+Use each library for its appropriate responsibility.
+
+### React Hook Form
+
+Use React Hook Form for:
+
+* Form state
+* Field registration
+* Form submission
+* Resetting the form
+* Managing form errors
+
+Do not manually create separate `useState` variables for every form field.
+
+### Zod
+
+Use Zod for all form validation.
+
+Integrate Zod with React Hook Form using:
+
+```ts
+zodResolver
+```
+
+### TanStack Query
+
+Use TanStack Query for **server/API state**.
+
+Use:
+
+* `useQuery`
+* `useMutation`
+* `useQueryClient`
+
+TanStack Query should handle:
+
+* Fetching users
+* Creating users
+* Updating users
+* Deleting users
+* Loading states
+* API errors
+* Cache management
+* Query invalidation
+
+Do not store the fetched users array inside Zustand.
+
+### Zustand
+
+Use Zustand only for **client/UI state**.
+
+For example:
+
+* Current editing user
+* Create/Edit mode
+* Other shared UI state when appropriate
+
+Do not duplicate TanStack Query server data inside Zustand.
+
+### Axios
+
+Use Axios for HTTP requests.
+
+Keep API requests inside a dedicated API/service layer.
+
+### Ant Design
+
+Use Ant Design for:
+
+* Table
+* Modal
+* Input
+* Radio
+* Checkbox
+* Select
+* Button
+* Empty
+* Loading indicators
+* Notifications/messages
+
+### Tailwind CSS
+
+Use Tailwind CSS for application layout and custom styling.
+
+Do not create unnecessary CSS files when Tailwind utility classes can handle the styling.
+
+Use Tailwind for:
+
+* Page layout
+* Spacing
+* Width/height
+* Typography
+* Flexbox/Grid
+* Form layout
+* Responsive design
+* Button positioning
+* Section styling
+* Containers/cards
+
+Ant Design should still be used for its functional UI components such as `Table`, `Modal`, `Input`, `Select`, `Radio`, `Checkbox`, and `Button`.
+
+Use Tailwind to control the overall appearance and layout around these components.
+
+---
+
+# 2. Naming Conventions
+
+Follow these naming conventions throughout the entire project.
+
+## Folder Names
+
+Use:
+
+```text
+kebab-case
+```
+
+Examples:
+
+```text
+user-management/
+user-form/
+user-table/
+api/
+schemas/
+components/
+```
+
+Do NOT use:
+
+```text
+UserManagement/
+user_management/
+UserManagementModule/
+```
+
+---
+
+## Component Names
+
+Use:
+
+```text
+PascalCase
+```
+
+Examples:
+
+```text
+UserForm
+UserTable
+DeleteUserModal
+UserManagement
+```
+
+Files should also use PascalCase for React components:
+
+```text
+UserForm.tsx
+UserTable.tsx
+DeleteUserModal.tsx
+```
+
+---
+
+## Hook Names
+
+Use:
+
+```text
+useCamelCase
+```
+
+Examples:
+
+```text
+useUsers
+useCreateUser
+useUpdateUser
+useDeleteUser
+```
+
+Custom hook files should follow the same naming style:
+
+```text
+useUsers.ts
+useUserMutations.ts
+```
+
+---
+
+## Variables
+
+Use:
+
+```text
+camelCase
+```
+
+Examples:
+
+```ts
+userList
+editingUser
+selectedUser
+isLoading
+formData
+userId
+```
+
+---
+
+## Boolean Variables
+
+Boolean variables must use meaningful prefixes such as:
+
+```text
+is
+has
+can
+```
+
+Examples:
+
+```ts
+isLoading
+isEditing
+isModalOpen
+hasError
+hasSkills
+canEdit
+canDelete
+```
+
+Avoid:
+
+```ts
+loading
+editing
+modal
+error
+```
+
+when the variable represents a boolean.
+
+---
+
+## Constants
+
+Use:
+
+```text
+UPPER_SNAKE_CASE
+```
+
+Examples:
+
+```ts
+API_BASE_URL
+DEFAULT_PAGE_SIZE
+MAX_NAME_LENGTH
+COUNTRY_OPTIONS
+SKILL_OPTIONS
+```
+
+---
+
+## Routes
+
+Use:
+
+```text
+kebab-case
+```
+
+Examples:
+
+```text
+/user-management
+/users
+/user-management/create
+```
+
+Do NOT use:
+
+```text
+/userManagement
+/user_management
+/UserManagement
+```
+
+---
+
+## Zustand Store / Slice Naming
+
+If Zustand store modules or slices are used, follow:
+
+```text
+feature.slice.ts
+```
+
+Example:
+
+```text
+user.slice.ts
+```
+
+If a Zustand store is not technically a slice, use a clear feature-based name such as:
+
+```text
+user-store.ts
+```
+
+---
+
+## Zod Schema Files
+
+Use:
+
+```text
+feature.schema.ts
+```
+
+Example:
+
+```text
+user.schema.ts
+```
+
+---
+
+## Git Branch Names
+
+Use:
+
+```text
+kebab-case
+```
+
+Examples:
+
+```text
+feature/user-management
+feature/user-form
+fix/user-validation
+refactor/user-api
+```
+
+---
+
+# 3. Project Structure
+
+Use a clean feature-oriented structure where appropriate.
+
+Suggested structure:
+
+```text
+src/
+│
+├── api/
+│   └── user-api.ts
+│
+├── components/
+│   ├── UserForm.tsx
+│   ├── UserTable.tsx
+│   └── DeleteUserModal.tsx
+│
+├── hooks/
+│   ├── useUsers.ts
+│   └── useUserMutations.ts
+│
+├── schemas/
+│   └── user.schema.ts
+│
+├── store/
+│   └── user-store.ts
+│
+├── types/
+│   └── user.ts
+│
+├── pages/
+│   └── UserManagement.tsx
+│
+├── constants/
+│   └── user.constants.ts
+│
+├── App.tsx
+└── main.tsx
+```
+
+Keep the structure simple enough for a student to understand.
+
+If a different structure is technically cleaner, explain the reason before changing it.
+
+---
+
+# 4. User Type
+
+Create a properly typed `User` interface.
+
+Example:
+
+```ts
+interface User {
+  id: number;
+  fullName: string;
+  email: string;
+  password?: string;
+  gender: "Male" | "Female" | "Other";
+  skills: string[];
+  country: string;
+  termsAccepted: boolean;
+}
+```
+
+Do not use `any` unless absolutely necessary.
+
+Properly type:
+
+* API responses
+* Form data
+* TanStack Query
+* Mutations
+* Zustand
+* Component props
+* Table data
+
+---
+
+# 5. User Form
+
+Create a reusable `UserForm` component that supports:
+
+```text
+Create Mode
+Edit Mode
+```
+
+Fields:
+
+## Full Name
+
+Rules:
+
+* Required
+* Minimum 3 characters
+
+---
+
+## Email Address
+
+Rules:
+
+* Required
+* Must be a valid email
+
+---
+
+## Password
+
+Create mode:
+
+* Required
+* Minimum 8 characters
+* Must contain at least one number
+
+Edit mode:
+
+* Password should NOT be required
+* Password field must be disabled
+
+---
+
+## Gender
+
+Use Ant Design Radio buttons:
+
+```text
+Male
+Female
+Other
+```
+
+Required.
+
+---
+
+## Skills
+
+Use Ant Design Checkbox group.
+
+Example:
+
+```text
+React
+TypeScript
+JavaScript
+Node.js
+CSS
+```
+
+Multiple selections allowed.
+
+At least one skill must be selected.
+
+---
+
+## Country
+
+Use Ant Design `Select`.
+
+Example:
+
+```text
+Nepal
+India
+USA
+UK
+Canada
+Australia
+```
+
+Required.
+
+---
+
+## Terms and Conditions
+
+Use Ant Design Checkbox.
+
+The checkbox must be selected before submission.
+
+---
+
+# 6. Validation
+
+Use:
+
+```text
+React Hook Form + Zod
+```
+
+Show validation errors directly below each corresponding field.
+
+Examples:
+
+```text
+Full name must be at least 3 characters
+Please enter a valid email
+Password must contain at least 8 characters
+Password must contain at least one number
+Please select a gender
+Please select at least one skill
+Please select a country
+You must accept the terms and conditions
+```
+
+Use Tailwind CSS to style validation messages.
+
+Example:
+
+```tsx
+<p className="mt-1 text-sm text-red-500">
+  {errors.fullName?.message}
+</p>
+```
+
+---
+
+# 7. Create User
+
+When submitting in Create mode:
+
+1. React Hook Form validates the form.
+2. Zod performs schema validation.
+3. Call the create-user TanStack Query mutation.
+4. Show loading state.
+5. On success:
+
+   * Show Ant Design success notification.
+   * Reset the form.
+   * Return to Create mode.
+   * Invalidate the users query.
+6. On error:
+
+   * Show Ant Design error notification.
+   * Keep the entered form values.
+
+Success message:
+
+```text
+User created successfully!
+```
+
+---
+
+# 8. User Table
+
+Use Ant Design `Table`.
+
+Columns:
+
+```text
+Full Name
+Email
+Gender
+Skills
+Country
+Actions
+```
+
+Requirements:
+
+* Use `rowKey`
+* Display dynamic API data
+* Display skills as comma-separated values
+* Show loading state
+* Show API error state
+* Show empty state
+* No hardcoded table rows
+
+Example skills display:
+
+```text
+React, TypeScript, JavaScript
+```
+
+---
+
+# 9. Edit User
+
+Add an Edit button inside the Actions column.
+
+When clicked:
+
+1. Store the selected user in Zustand.
+2. Change the form to Edit mode.
+3. Populate the form using React Hook Form `reset()`.
+4. Disable the password field.
+5. Allow the user to update the other fields.
+
+Display:
+
+```text
+Edit User
+```
+
+instead of:
+
+```text
+Add User
+```
+
+Provide a Cancel Edit button.
+
+Cancel Edit should:
+
+* Clear editing user
+* Reset the form
+* Return to Create mode
+
+---
+
+# 10. Update User
+
+When submitting in Edit mode:
+
+1. Validate with Zod.
+2. Call update mutation.
+3. Show loading state.
+4. Update server data through TanStack Query.
+5. Invalidate/refetch users query.
+6. Show success notification.
+7. Reset form.
+8. Clear editing user from Zustand.
+9. Return to Create mode.
+
+Success message:
+
+```text
+User updated successfully!
+```
+
+The table must update without a page reload.
+
+---
+
+# 11. Delete User
+
+Add a Delete button inside the Actions column.
+
+When clicked, display an Ant Design `Modal`.
+
+Modal text must be:
+
+```text
+Are you sure you want to delete this user?
+```
+
+Buttons:
+
+```text
+Cancel
+Confirm
+```
+
+### Cancel
+
+* Close modal
+* Do not delete user
+
+### Confirm
+
+1. Call delete mutation.
+2. Show loading state on Confirm button.
+3. Delete user through API.
+4. Invalidate/refetch users query.
+5. Close modal.
+6. Show success notification.
+
+Success message:
+
+```text
+User deleted successfully!
+```
+
+If deletion fails:
+
+```text
+Failed to delete user.
+```
+
+---
+
+# 12. Ant Design Notifications
+
+Use Ant Design notification/message functionality.
+
+Show appropriate feedback for:
+
+### Success
+
+```text
+User created successfully!
+User updated successfully!
+User deleted successfully!
+```
+
+### Error
+
+```text
+Failed to create user.
+Failed to update user.
+Failed to delete user.
+Failed to fetch users.
+```
+
+Do not use:
+
+```ts
+alert()
+```
+
+---
+
+# 13. Loading States
+
+Provide proper loading feedback.
+
+Examples:
+
+```text
+Loading users...
+Creating user...
+Updating user...
+Deleting user...
+```
+
+Use Ant Design loading properties where available.
+
+For example:
+
+```tsx
+<Button loading={isPending}>
+```
+
+and:
+
+```tsx
+<Table loading={isLoading}>
+```
+
+---
+
+# 14. Error Handling
+
+Handle errors from API requests properly.
+
+For fetching:
+
+```text
+Failed to load users.
+```
+
+For mutations:
+
+```text
+Failed to create user.
+Failed to update user.
+Failed to delete user.
+```
+
+Show errors using Ant Design notifications/messages where appropriate.
+
+---
+
+# 15. TanStack Query Architecture
+
+Use:
+
+```text
+useQuery
+```
+
+for fetching users.
+
+Use:
+
+```text
+useMutation
+```
+
+for:
+
+```text
+Create
+Update
+Delete
+```
+
+Use:
+
+```ts
+queryClient.invalidateQueries()
+```
+
+after successful mutations.
+
+The data flow should be:
+
+```text
+API
+ ↓
+Axios
+ ↓
+TanStack Query
+ ↓
+UserTable
+```
+
+Do NOT do:
+
+```text
+API
+ ↓
+useState
+ ↓
+Zustand
+ ↓
+Table
+```
+
+---
+
+# 16. Zustand Architecture
+
+Zustand should manage only client/UI state.
+
+For example:
+
+```ts
+interface UserStore {
+  editingUser: User | null;
+
+  setEditingUser: (user: User | null) => void;
+}
+```
+
+Potential flow:
+
+```text
+Click Edit
+    ↓
+Zustand stores editingUser
+    ↓
+UserForm detects edit mode
+    ↓
+React Hook Form reset()
+    ↓
+User edits form
+```
+
+Do not store the fetched users array in Zustand.
+
+---
+
+# 17. Tailwind CSS Requirements
+
+Use Tailwind CSS throughout the application for layout and styling.
+
+Example page layout:
+
+```tsx
+<div className="min-h-screen bg-gray-50 p-6">
+  <div className="mx-auto max-w-7xl">
+    ...
+  </div>
+</div>
+```
+
+Use Tailwind for:
+
+* Page background
+* Containers
+* Cards
+* Spacing
+* Grid/Flex layouts
+* Responsive behavior
+* Typography
+* Error messages
+* Section headings
+* Form spacing
+* Button positioning
+
+Keep the design clean and professional.
+
+Avoid creating custom CSS files unless Tailwind cannot reasonably handle the requirement.
+
+---
+
+# 18. Ant Design + Tailwind
+
+Use both libraries appropriately.
+
+### Ant Design
+
+Responsible for:
+
+```text
+Table
+Modal
+Input
+Select
+Radio
+Checkbox
+Button
+Empty
+Notification
+```
+
+### Tailwind
+
+Responsible for:
+
+```text
+Layout
+Spacing
+Responsive design
+Typography
+Containers
+Page structure
+Custom styling
+```
+
+Do not unnecessarily recreate Ant Design components with Tailwind.
+
+---
+
+# 19. Form Layout
+
+Create a clean responsive layout.
+
+For example:
+
+```text
+┌──────────────────────────────────────────────┐
+│              User Management                 │
+├──────────────────────────────────────────────┤
+│                                              │
+│  Add User / Edit User                       │
+│                                              │
+│  Full Name                                   │
+│  [____________________________]               │
+│                                              │
+│  Email                                       │
+│  [____________________________]               │
+│                                              │
+│  Password                                    │
+│  [____________________________]               │
+│                                              │
+│  Gender                                      │
+│  ○ Male  ○ Female  ○ Other                   │
+│                                              │
+│  Skills                                      │
+│  ☐ React  ☐ TypeScript  ☐ JavaScript        │
+│                                              │
+│  Country                                     │
+│  [ Select Country ▼ ]                        │
+│                                              │
+│  ☐ I accept Terms and Conditions              │
+│                                              │
+│  [ Add User ]                                │
+│                                              │
+├──────────────────────────────────────────────┤
+│                  User List                   │
+│                                              │
+│  Full Name | Email | Gender | Skills | ...  │
+│  ------------------------------------------  │
+│  John      | ...   | Male   | React,...     │
+│                                              │
+└──────────────────────────────────────────────┘
+```
+
+Use responsive Tailwind classes so the layout works on desktop and smaller screens.
+
+---
+
+# 20. API Layer
+
+Create:
+
+```text
+src/api/user-api.ts
+```
+
+Functions:
+
+```ts
+getUsers()
+createUser()
+updateUser()
+deleteUser()
+```
+
+Keep Axios logic inside this file.
+
+Do not put Axios requests directly inside components.
+
+---
+
+# 21. Custom Hooks
+
+Create reusable TanStack Query hooks where useful.
+
+For example:
+
+```text
+useUsers
+useCreateUser
+useUpdateUser
+useDeleteUser
+```
+
+These hooks should hide TanStack Query implementation details from the UI components.
+
+Example concept:
+
+```text
+UserTable
+    ↓
+useUsers()
+    ↓
+TanStack Query
+    ↓
+user-api.ts
+    ↓
+Axios
+```
+
+---
+
+# 22. TypeScript Rules
+
+Follow strict TypeScript practices.
+
+Avoid:
+
+```ts
+any
+```
+
+Prefer:
+
+```ts
+unknown
+```
+
+when the type is genuinely unknown, followed by proper type narrowing.
+
+Use:
+
+* Interfaces
+* Type aliases
+* Union types
+* Literal types
+* Proper generic types
+* Typed API responses
+* Typed React Hook Form
+* Typed Zustand store
+
+---
+
+# 23. Naming Convention Summary
+
+Follow these rules everywhere:
+
+| Item           | Convention           | Example                   |
+| -------------- | -------------------- | ------------------------- |
+| Folder         | kebab-case           | `user-management`         |
+| Component      | PascalCase           | `UserForm`                |
+| Component file | PascalCase           | `UserForm.tsx`            |
+| Hook           | useCamelCase         | `useUsers`                |
+| Hook file      | camelCase with `use` | `useUsers.ts`             |
+| Variable       | camelCase            | `editingUser`             |
+| Boolean        | is/has/can           | `isLoading`               |
+| Constant       | UPPER_SNAKE_CASE     | `API_BASE_URL`            |
+| Route          | kebab-case           | `/user-management`        |
+| Zustand slice  | feature.slice.ts     | `user.slice.ts`           |
+| Zod schema     | feature.schema.ts    | `user.schema.ts`          |
+| Git branch     | kebab-case           | `feature/user-management` |
+
+Follow these naming rules consistently.
+
+---
+
+# 24. Final Project Architecture
+
+The final architecture should conceptually look like:
+
+```text
+                    USER MANAGEMENT
+                           │
+             ┌─────────────┴─────────────┐
+             │                           │
+         User Form                  User Table
+             │                           │
+      React Hook Form               Ant Design
+             │                       Table
+           Zod                          │
+        Validation                      │
+             │                           │
+             └───────────┬───────────────┘
+                         │
+                  TanStack Query
+                         │
+              ┌──────────┼──────────┐
+              │          │          │
+            GET        POST       PUT/DELETE
+              │          │          │
+              └──────────┼──────────┘
+                         │
+                       Axios
+                         │
+                      API
+                         
+                         
+       Zustand
+          │
+          └── UI/Client State
+              └── editingUser
+```
+
+---
+
+# 25. Important State Management Rule
+
+Clearly separate the three types of state:
+
+```text
+React Hook Form
+→ Form State
+
+TanStack Query
+→ Server/API State
+
+Zustand
+→ Client/UI State
+```
+
+Do not mix these responsibilities.
+
+For example:
+
+```text
+users[]
+```
+
+belongs to:
+
+```text
+TanStack Query
+```
+
+while:
+
+```text
+editingUser
+```
+
+can belong to:
+
+```text
+Zustand
+```
+
+and:
+
+```text
+fullName
+email
+gender
+skills
+country
+termsAccepted
+```
+
+belong to:
+
+```text
+React Hook Form
+```
+
+---
+
+# 26. Learning Requirements
+
+After providing the code, explain the project in simple beginner-friendly language.
+
+Explain:
+
+1. Why TanStack Query is used
+2. Why Zustand is used
+3. Why React Hook Form is used
+4. Why Zod is used
+5. Why Axios is used
+6. Why Ant Design is used
+7. Why Tailwind CSS is used
+8. Why server state should not be duplicated in Zustand
+9. Create flow
+10. Read flow
+11. Update flow
+12. Delete flow
+13. Form validation flow
+14. Error handling flow
+15. Query invalidation flow
+
+Show the complete data flow:
+
+```text
+CREATE
+
+User fills form
+      ↓
+React Hook Form
+      ↓
+Zod validation
+      ↓
+TanStack Mutation
+      ↓
+Axios
+      ↓
+API
+      ↓
+Query invalidation
+      ↓
+User Table refreshes
+```
+
+And:
+
+```text
+EDIT
+
+Click Edit
+      ↓
+Zustand stores editingUser
+      ↓
+React Hook Form reset()
+      ↓
+User edits fields
+      ↓
+Zod validation
+      ↓
+Update Mutation
+      ↓
+Axios
+      ↓
+API
+      ↓
+Query invalidation
+      ↓
+Table refreshes
+```
+
+---
+
+# 27. Deliverables
+
+Provide the implementation in this order:
+
+### Step 1
+
+Required installation commands.
+
+### Step 2
+
+Final folder structure.
+
+### Step 3
+
+TypeScript types.
+
+### Step 4
+
+Zod schema.
+
+### Step 5
+
+Axios API layer.
+
+### Step 6
+
+TanStack Query hooks.
+
+### Step 7
+
+Zustand store.
+
+### Step 8
+
+User Form.
+
+### Step 9
+
+User Table.
+
+### Step 10
+
+Delete Modal.
+
+### Step 11
+
+User Management page.
+
+### Step 12
+
+Application/TanStack Query provider setup.
+
+### Step 13
+
+Tailwind CSS setup.
+
+### Step 14
+
+Complete working CRUD flow.
+
+### Step 15
+
+Explain the complete code and architecture.
+
+Keep the code **clean, simple, beginner-friendly, properly typed, and easy to copy/paste**.
+
+Do not over-engineer the project.
+
+
+
